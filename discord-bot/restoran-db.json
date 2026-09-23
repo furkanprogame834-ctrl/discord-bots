@@ -1,0 +1,29 @@
+{
+  "1466376396346490973": {
+    "esyalar": {
+      "Lahmacun": 1,
+      "Sushi": 2,
+      "Kebap": 3
+    },
+    "harcanan": 940
+  },
+  "1247561442090160172": {
+    "esyalar": {
+      "Döner": 1,
+      "Sushi": 1,
+      "Pide": 1,
+      "Burger": 1,
+      "Lahmacun": 1,
+      "Tavuk Kanat": 1,
+      "Pizza": 1,
+      "Kebap": 1
+    },
+    "harcanan": 905
+  },
+  "983402769111191653": {
+    "esyalar": {
+      "Sushi": 1
+    },
+    "harcanan": 200
+  }
+}

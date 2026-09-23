@@ -1,0 +1,13 @@
+{
+  "name": "discord-bot-2",
+  "version": "1.0.0",
+  "description": "Sadece aktif bot",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7"
+  }
+}

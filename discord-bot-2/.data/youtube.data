@@ -1,0 +1,21 @@
+{
+    "cookie": {
+        "CONSENT": "YES+1",
+        "SOCS": "CAI",
+        "__Secure-YNID": "21.YT=X3vBzOHrJDPnSmzVxhPoYZqoZeGRbKMYCg1zbGhE0YgwvqedQq3cXzvIGszwqjbM1H4olLTmDWuXWhnSvPtjyoSe3vpObKOPxd4thtJDHmIBKCOhbz0VDH26AXo0RIpFeGNS5S65DyFDx6bkdFTz-mo7w933yyzoI8KAUb2JOXANU6S028Q6l2zagQOiHkU0OPGG3MgtHjzDGwq_7xwDnAiYYIE2QTyBiG4ihLTqtfTkuUDDxxOL3DSZzSuzrUQ3J-g0jW4diGIz4tk-hIHkpP1LGp2L30CcxsfNuDzNoauRZx1xpv3D7YltZ1hwfrQMOYgu6ywjsZJwb5nAX_Rogw",
+        "expires": "Mon, 22-Mar-2027 13:29:54 GMT",
+        "path": "/",
+        "domain": ".youtube.com",
+        "SameSite": "none",
+        "GPS": "1",
+        "Domain": "youtube.com",
+        "Expires": "Mon, 22-Mar-2027 13:29:54 GMT",
+        "Path": "/",
+        "YSC": "oFb3h89-rmI",
+        "__Secure-YEC": "",
+        "VISITOR_INFO1_LIVE": "rpHLJoa3hHA",
+        "VISITOR_PRIVACY_METADATA": "CgJUUhIEGgAgSA%3D%3D",
+        "__Secure-ROLLOUT_TOKEN": "CNnSkeDp5aKUxgEQ6LuP1OeElwMY6LuP1OeElwM%3D"
+    },
+    "file": true
+}

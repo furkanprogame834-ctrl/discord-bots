@@ -1,0 +1,96 @@
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+
+const dbPath = path.join(__dirname, '..', 'para-db.json');
+
+function loadDb() {
+  try {
+    if (fs.existsSync(dbPath)) return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+  } catch (e) {}
+  return {};
+}
+function saveDb(db) {
+  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+}
+
+function gunlukBonus(db, userId) {
+  const suan = Date.now();
+  if (!db[userId]) db[userId] = { para: 0, sonBonus: 0 };
+  const birGun = 24 * 60 * 60 * 1000;
+  const gecen = suan - (db[userId].sonBonus || 0);
+  if (gecen < birGun) {
+    const kalanDk = Math.ceil((birGun - gecen) / 60000);
+    return { basarili: false, kalan: kalanDk };
+  }
+  const bonus = Math.floor(Math.random() * 200) + 100;
+  db[userId].para += bonus;
+  db[userId].sonBonus = suan;
+  saveDb(db);
+  return { basarili: true, miktar: bonus, toplam: db[userId].para };
+}
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('para')
+    .setDescription('Para / bakiye sistemi')
+    .addSubcommand(sub => sub.setName('bak').setDescription('Bakiyeni gör'))
+    .addSubcommand(sub => sub.setName('bonus').setDescription('Günlük bonusunu al'))
+    .addSubcommand(sub => sub.setName('transfer').setDescription('Başkasına para gönder')
+      .addUserOption(opt => opt.setName('kisi').setDescription('Gönderilecek kişi').setRequired(true))
+      .addIntegerOption(opt => opt.setName('miktar').setDescription('Miktar').setRequired(true).setMinValue(1))),
+  async execute(interaction) {
+    const db = loadDb();
+    const sub = interaction.options.getSubcommand();
+
+    if (sub === 'bak') {
+      const user = interaction.options.getUser('kullanici') || interaction.user;
+      if (!db[user.id]) db[user.id] = { para: 0, sonBonus: 0 };
+      const embed = new EmbedBuilder()
+        .setColor(0xFFD700)
+        .setTitle('💰 Bakiye')
+        .setDescription(`**${user.username}**\n\nCüzdan: **${db[user.id].para.toLocaleString('tr-TR')} TL**`)
+        .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+        .setTimestamp();
+      return interaction.reply({ embeds: [embed] });
+    }
+
+    if (sub === 'bonus') {
+      const sonuc = gunlukBonus(db, interaction.user.id);
+      if (!sonuc.basarili) {
+        return interaction.reply({ content: `⏰ Günlük bonusunu zaten aldın! Kalan süre: **${sonuc.kalan}** dakika`, flags: 64 });
+      }
+      const embed = new EmbedBuilder()
+        .setColor(0x00FF00)
+        .setTitle('🎁 Günlük Bonus!')
+        .setDescription(`**${sonuc.miktar.toLocaleString('tr-TR')} TL** kazandın!\nToplam bakiye: **${sonuc.toplam.toLocaleString('tr-TR')} TL**`)
+        .setTimestamp();
+      return interaction.reply({ embeds: [embed] });
+    }
+
+    const hedef = interaction.options.getUser('kisi');
+    const miktar = interaction.options.getInteger('miktar');
+
+    if (hedef.id === interaction.user.id) return interaction.reply({ content: 'Kendine para gönderemezsin!', flags: 64 });
+    if (hedef.bot) return interaction.reply({ content: 'Botlara para gönderemezsin!', flags: 64 });
+
+    if (!db[interaction.user.id]) db[interaction.user.id] = { para: 0, sonBonus: 0 };
+    if (!db[hedef.id]) db[hedef.id] = { para: 0, sonBonus: 0 };
+
+    if (db[interaction.user.id].para < miktar) {
+      return interaction.reply({ content: `❌ Yeterli paran yok! Bakiyen: **${db[interaction.user.id].para.toLocaleString('tr-TR')} TL**`, flags: 64 });
+    }
+
+    db[interaction.user.id].para -= miktar;
+    db[hedef.id].para += miktar;
+    saveDb(db);
+
+    const embed = new EmbedBuilder()
+      .setColor(0x00BFFF)
+      .setTitle('✅ Transfer Başarılı!')
+      .setDescription(`**${interaction.user.username}** → **${hedef.username}**\nMiktar: **${miktar.toLocaleString('tr-TR')} TL**\n\nKalan bakiyen: **${db[interaction.user.id].para.toLocaleString('tr-TR')} TL**`)
+      .setTimestamp();
+
+    return interaction.reply({ embeds: [embed] });
+  },
+};

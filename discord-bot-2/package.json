@@ -1,0 +1,19 @@
+{
+  "name": "discord-bot-2",
+  "version": "1.0.0",
+  "description": "Sadece aktif bot",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.19.2",
+    "@distube/ytdl-core": "^4.16.12",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7",
+    "ffmpeg-static": "^5.3.0",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.9.7",
+    "youtube-dl-exec": "^3.1.15"
+  }
+}
