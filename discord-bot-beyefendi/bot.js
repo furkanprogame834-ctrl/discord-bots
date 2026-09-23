@@ -3,6 +3,14 @@ const { Client, Collection, GatewayIntentBits, Events } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('ok');
+});
+const PORT = process.env.PORT || 10000;
+server.listen(PORT, () => console.log(`HTTP sunucu ${PORT} portunda dinliyor (Render saglik kontrolu)`));
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
